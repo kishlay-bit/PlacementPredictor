@@ -1,0 +1,2 @@
+-r ../ML/05_app_ready/requirements.txt
+flask>=3.0
