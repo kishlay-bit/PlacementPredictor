@@ -1,0 +1,52 @@
+{
+  "random_state": 42,
+  "quick_mode": false,
+  "n_rows": 100000,
+  "selected_classifier": "1. Logistic Regression",
+  "selected_regressor": "1. Ridge Regression",
+  "engineered_features": {
+    "classifier": false,
+    "regressor": false
+  },
+  "calibration_applied": false,
+  "classifier_test_metrics": {
+    "accuracy": 0.5721,
+    "precision": 0.5800521333516258,
+    "recall": 0.7763496143958869,
+    "f1": 0.6639968590498626,
+    "roc_auc": 0.5860062306147585,
+    "pr_auc": 0.6199892656968442,
+    "brier": 0.2422287997785116,
+    "log_loss": 0.6773640372743018
+  },
+  "placement_signal": {
+    "test_auc": 0.5860062306147585,
+    "auc_ci95": [
+      0.5790525910577504,
+      0.593733828366678
+    ],
+    "placement_rate_lowest_decile": 0.4115,
+    "placement_rate_highest_decile": 0.6815,
+    "prob_p05": 0.4124199403733135,
+    "prob_p95": 0.6650142009597597,
+    "reliability_note": "Placement is only weakly predictable from these features (AUC 0.59, 95% CI 0.58-0.59). Predicted chances span just 41%-67% for 90% of students; use them as a rough guide, and treat the salary estimate as the more reliable output."
+  },
+  "regressor_test_metrics": {
+    "mae_lpa": 0.7958219602216297,
+    "rmse_lpa": 0.9984422796671545,
+    "r2": 0.6028521845841548
+  },
+  "salary_band_80pct_coverage": 0.793334557473375,
+  "end_to_end_expected_lpa_metrics": {
+    "mae_lpa": 6.404937959181244,
+    "rmse_lpa": 6.578543442697039,
+    "r2": 0.04539949418970746
+  },
+  "versions": {
+    "sklearn": "1.6.1",
+    "xgboost": "3.2.0",
+    "lightgbm": "4.6.0",
+    "pandas": "2.3.3",
+    "numpy": "2.0.2"
+  }
+}

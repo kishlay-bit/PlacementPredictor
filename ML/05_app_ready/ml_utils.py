@@ -72,12 +72,16 @@ class PlacementPredictor:
         self.q_hi = joblib.load(d / "salary_q90.joblib")
         with open(d / "feature_schema.json") as f:
             self.schema = json.load(f)
+        self.pq = np.array(self.schema.get("probability_quantiles", []), dtype=float)
 
     def _frame(self, data):
         df = pd.DataFrame([data]) if isinstance(data, dict) else data.copy()
         missing = [c for c in self.schema["input_features"] if c not in df.columns]
         if missing:
             raise ValueError(f"Missing input fields: {missing}")
+        for col, meta in self.schema["features"].items():
+            if meta["type"] in ("integer", "float"):
+                df[col] = df[col].astype(float).clip(meta["min"], meta["max"])
         return df
 
     def predict_frame(self, data):
@@ -88,7 +92,8 @@ class PlacementPredictor:
         lo = np.clip(self.q_lo.predict(df[rf]), 0, None)
         hi = np.clip(self.q_hi.predict(df[rf]), 0, None)
         lo, hi = np.minimum(lo, sal), np.maximum(hi, sal)      # guarantee lo <= point <= hi
-        return pd.DataFrame({"placement_probability": p, "salary_if_placed_lpa": sal,
+        pct = np.interp(p, self.pq, np.linspace(0, 100, len(self.pq))) if len(self.pq) > 1 else np.full(len(p), np.nan)
+        return pd.DataFrame({"placement_probability": p, "profile_percentile": pct, "salary_if_placed_lpa": sal,
                              "salary_low_lpa": lo, "salary_high_lpa": hi,
                              "expected_lpa": p * sal})
 
@@ -97,6 +102,7 @@ class PlacementPredictor:
         p, sal, lo, hi, exp = (float(r[k]) for k in ["placement_probability", "salary_if_placed_lpa",
                                                       "salary_low_lpa", "salary_high_lpa", "expected_lpa"])
         return {
+            "profile_percentile": None if np.isnan(r["profile_percentile"]) else round(float(r["profile_percentile"]), 1),
             "placement_probability": round(p, 4),
             "placement_percent": round(100 * p, 1),
             "predicted_placed": bool(p >= 0.5),
