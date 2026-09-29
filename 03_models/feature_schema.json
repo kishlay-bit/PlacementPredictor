@@ -1,0 +1,117 @@
+{
+  "input_features": [
+    "cgpa",
+    "internships_count",
+    "projects_count",
+    "coding_skill_score",
+    "aptitude_score",
+    "communication_skill_score",
+    "logical_reasoning_score",
+    "mock_interview_score",
+    "backlogs",
+    "extracurricular_score",
+    "leadership_score"
+  ],
+  "classifier_features": [
+    "cgpa",
+    "internships_count",
+    "projects_count",
+    "coding_skill_score",
+    "aptitude_score",
+    "communication_skill_score",
+    "logical_reasoning_score",
+    "mock_interview_score",
+    "backlogs",
+    "extracurricular_score",
+    "leadership_score"
+  ],
+  "regressor_features": [
+    "cgpa",
+    "internships_count",
+    "coding_skill_score"
+  ],
+  "excluded_protected": [
+    "gender",
+    "age"
+  ],
+  "features": {
+    "cgpa": {
+      "type": "float",
+      "label": "CGPA (out of 10)",
+      "min": 4.5,
+      "max": 10.0,
+      "default": 7.5
+    },
+    "internships_count": {
+      "type": "integer",
+      "label": "Internships completed",
+      "min": 0.0,
+      "max": 8.0,
+      "default": 1.0
+    },
+    "projects_count": {
+      "type": "integer",
+      "label": "Projects completed",
+      "min": 0.0,
+      "max": 13.0,
+      "default": 3.0
+    },
+    "coding_skill_score": {
+      "type": "float",
+      "label": "Coding skill (0-100)",
+      "min": 20.0,
+      "max": 100.0,
+      "default": 69.96
+    },
+    "aptitude_score": {
+      "type": "float",
+      "label": "Aptitude score (0-100)",
+      "min": 20.0,
+      "max": 100.0,
+      "default": 65.04
+    },
+    "communication_skill_score": {
+      "type": "float",
+      "label": "Communication skill (0-100)",
+      "min": 20.0,
+      "max": 100.0,
+      "default": 67.96
+    },
+    "logical_reasoning_score": {
+      "type": "float",
+      "label": "Logical reasoning (0-100)",
+      "min": 20.0,
+      "max": 100.0,
+      "default": 66.04
+    },
+    "mock_interview_score": {
+      "type": "float",
+      "label": "Mock interview score (0-100)",
+      "min": 20.0,
+      "max": 100.0,
+      "default": 70.04
+    },
+    "backlogs": {
+      "type": "integer",
+      "label": "Active backlogs",
+      "min": 0.0,
+      "max": 6.0,
+      "default": 0.0
+    },
+    "extracurricular_score": {
+      "type": "float",
+      "label": "Extracurricular (0-100)",
+      "min": 0.0,
+      "max": 100.0,
+      "default": 60.08
+    },
+    "leadership_score": {
+      "type": "float",
+      "label": "Leadership (0-100)",
+      "min": 0.0,
+      "max": 100.0,
+      "default": 55.11
+    }
+  },
+  "currency_note": "1 LPA = Rs 1,00,000 per year"
+}
