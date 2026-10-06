@@ -5,7 +5,7 @@ import pandas as pd
 import joblib
 from sklearn.base import BaseEstimator, TransformerMixin
 
-SKILL_COLS = ["coding_skill_score", "aptitude_score", "communication_skill_score", "logical_reasoning_score"]
+SKILL_COLS = ["coding_skill_score", "aptitude_score", "communication_score", "dsa_score", "core_subject_score"]
 
 
 class FeatureEngineer(BaseEstimator, TransformerMixin):
@@ -22,7 +22,7 @@ class FeatureEngineer(BaseEstimator, TransformerMixin):
         if self.add_features:
             if sum(c in cols for c in SKILL_COLS) >= 2:
                 new.append("skill_index")
-            if "internships_count" in cols and "projects_count" in cols:
+            if "internship_count" in cols and "projects_count" in cols:
                 new.append("experience_index")
             if "backlogs" in cols:
                 new.append("has_backlog")
@@ -38,7 +38,7 @@ class FeatureEngineer(BaseEstimator, TransformerMixin):
             if c == "skill_index":
                 X[c] = X[[s for s in SKILL_COLS if s in X.columns]].mean(axis=1)
             elif c == "experience_index":
-                X[c] = X["internships_count"] + X["projects_count"]
+                X[c] = X["internship_count"] + X["projects_count"]
             elif c == "has_backlog":
                 X[c] = (X["backlogs"] > 0).astype(int)
         return X

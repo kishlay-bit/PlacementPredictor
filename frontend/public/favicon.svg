@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Placement Predictor favicon">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0f5ef7"/>
+      <stop offset="100%" stop-color="#5ba3ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#0f172a"/>
+  <rect x="16" y="16" width="96" height="96" rx="22" fill="url(#g)"/>
+  <path d="M38 84V44h18.8c10.9 0 18.3 4.5 18.3 14.3 0 9.7-7.4 14.3-18.3 14.3H46.2V84H38zm8.2-7.6h9.4c6.2 0 10.4-2.7 10.4-8.8 0-6-4.2-8.7-10.4-8.7h-9.4v17.5z" fill="#fff"/>
+  <path d="M74 44h7.7v40H74V44zm0 0" fill="#dfeaff"/>
+  <path d="M76 68h30v6H76zm0-12h30v6H76z" fill="#dfeaff" opacity="0.85"/>
+</svg>

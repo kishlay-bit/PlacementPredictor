@@ -1,37 +1,74 @@
-import { lpa, rupees } from "./format.js";
+import { lpa, lpaRange, percent, rupees } from "./format.js";
 
-export default function Result({ result, note }) {
-  const chance = Math.round(result.placement_percent);
-  const [low, high] = result.salary_range_lpa;
-  const [lowInr, highInr] = result.salary_range_inr;
+export default function Result({ result, note, onReset }) {
+  const placementProbability = Number(result.placement_percent ?? result.placement_probability * 100 ?? 0);
+  const salaryEstimate = Number(result.salary_if_placed_lpa ?? 0);
+  const expectedSalary = Number(result.expected_lpa ?? 0);
+  const salaryRange = Array.isArray(result.salary_range_lpa) ? result.salary_range_lpa : [0, 0];
+  const [lowLpa, highLpa] = salaryRange;
+  const predictedStatus = result.predicted_placed ? "High likelihood of placement" : "Lower likelihood of placement";
 
   return (
-    <section className="result" aria-live="polite">
-      <h2>Result</h2>
-
-      <div className="block">
-        <div className="label">Chance of placement</div>
-        <div className="big">{chance}%</div>
-        <div className="track" role="img" aria-label={`${chance} percent`}>
-          <div className="fill" style={{ width: `${chance}%` }} />
+    <section className="result-dashboard" aria-live="polite">
+      <div className="result-header">
+        <div>
+          <span className="eyebrow">Prediction result</span>
+          <h3>Profile analyzed successfully.</h3>
         </div>
-        {result.profile_percentile != null && (
-          <p className="muted">
-            This profile scores higher than about {Math.round(result.profile_percentile)}% of the students in the training data.
+      </div>
+
+      <div className="result-grid">
+        <article className="result-card accent-card">
+          <div className="label">Placement Probability</div>
+          <div className="big-value">{percent(placementProbability)}</div>
+          <div className="track" role="img" aria-label={`${placementProbability} percent probability`}>
+            <div className="fill" style={{ width: `${Math.min(100, Math.max(0, placementProbability))}%` }} />
+          </div>
+          <p className="meta-label">Model-estimated placement probability</p>
+        </article>
+
+        <article className="result-card">
+          <div className="label">Placement Prediction</div>
+          <div className="big-value small">{predictedStatus}</div>
+          <p className="meta-label">{result.predicted_placed ? "Likely to receive an offer" : "Probability is below the placement threshold"}</p>
+        </article>
+
+        <article className="result-card">
+          <div className="label">Expected Salary</div>
+          <div className="big-value small">{lpa(salaryEstimate)}</div>
+          <p className="meta-label">Model-estimated expected salary</p>
+          <p className="subtle">{rupees(result.salary_if_placed_inr ?? salaryEstimate * 100000)} per year</p>
+        </article>
+
+        <article className="result-card">
+          <div className="label">Salary Range</div>
+          <div className="big-value small">{lpaRange(lowLpa, highLpa)}</div>
+          <p className="meta-label">Estimated salary range</p>
+          <p className="subtle">
+            {rupees(result.salary_range_inr?.[0] ?? lowLpa * 100000)} – {rupees(result.salary_range_inr?.[1] ?? highLpa * 100000)} per year
           </p>
-        )}
+        </article>
       </div>
 
-      <div className="block">
-        <div className="label">Estimated package if placed</div>
-        <div className="big">{lpa(result.salary_if_placed_lpa)}</div>
-        <p>{rupees(result.salary_if_placed_inr)} per year</p>
-        <p className="muted">
-          Likely range: {lpa(low)} to {lpa(high)} ({rupees(lowInr)} to {rupees(highInr)} per year)
+      {result.profile_percentile != null && (
+        <p className="result-footnote">
+          This profile is above approximately {Math.round(result.profile_percentile)}% of the training data.
         </p>
-      </div>
+      )}
 
-      {note && <p className="note">{note}</p>}
+      {expectedSalary > 0 && (
+        <p className="result-footnote">
+          Expected LPA: {lpa(expectedSalary)}
+        </p>
+      )}
+
+      {note && <div className="result-note">{note}</div>}
+
+      <div className="result-actions">
+        <button type="button" className="button primary" onClick={onReset}>
+          Predict Again
+        </button>
+      </div>
     </section>
   );
 }
